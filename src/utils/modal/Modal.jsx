@@ -63,10 +63,10 @@ const Modal = (props) => {
         .then((res) => {
           console.log('res', res.data);
           sessionStorage.setItem('catId', res.data.categoryId);
-          alert(res.data.status);
+          alert('success');
         })
         .catch((err) => {
-          alert(err.response.data.Error);
+          alert('error');
         });
     } else if (props.title === 'Sub Category') {
       alert('sub cAt');

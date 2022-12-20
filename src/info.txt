@@ -3,3 +3,4 @@
 * modal file is created in utls folder
 * show modal slice added in redux
 *response from category id stored in sessionStorage
+*pushed everything to master

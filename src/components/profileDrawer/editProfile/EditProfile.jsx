@@ -76,7 +76,7 @@ const EditProfile = () => {
           method: 'post',
           headers: {
             Accept: 'application/json, text/plain, */*',
-            'Content-type': ' multipart/form-date',
+          "Content-Type": "application/json",
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
           data: formData,
