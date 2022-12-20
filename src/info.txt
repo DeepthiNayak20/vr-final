@@ -1,0 +1,2 @@
+* Added svg add icon to utils folder
+* Add buttons added to video category and sub category

@@ -1,46 +1,50 @@
-import './Upload.css'
-import { useState, useEffect } from 'react'
+import './Upload.css';
+import { useState, useEffect } from 'react';
 import {
   Accordion,
   AccordionItem,
   AccordionItemHeading,
   AccordionItemButton,
   AccordionItemPanel,
-} from 'react-accessible-accordion'
-import 'react-accessible-accordion/dist/fancy-example.css'
-import UploadMultipleVideos from '../uploadMultipleVideos/UploadMultipleVideos'
-import RichTextEditor from '../richTextEditor/RichTextEditor'
-import OtherTextArea from '../otherTextArea/OtherTextArea'
-import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
-import { storeoverViewData } from '../../../redux/reducers/overViewSlice'
-import Loading from '../../../utils/loading/loading'
-import { chapterName, storechapter } from '../../../redux/reducers/chapterSlice'
-import { storecourseId } from '../../../redux/reducers/courseIdSlice'
+} from 'react-accessible-accordion';
+import 'react-accessible-accordion/dist/fancy-example.css';
+import UploadMultipleVideos from '../uploadMultipleVideos/UploadMultipleVideos';
+import RichTextEditor from '../richTextEditor/RichTextEditor';
+import OtherTextArea from '../otherTextArea/OtherTextArea';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { storeoverViewData } from '../../../redux/reducers/overViewSlice';
+import Loading from '../../../utils/loading/loading';
+import {
+  chapterName,
+  storechapter,
+} from '../../../redux/reducers/chapterSlice';
+import { storecourseId } from '../../../redux/reducers/courseIdSlice';
 
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { addIcon } from '../../../utils/icons';
 
 const Upload = () => {
-  const [counterVideo, setCounterVideo] = useState(0)
-  const [uploadSuccessful, setUploadSuccessful] = useState(true)
-  const [videoCategory, setVideoCategory] = useState([])
-  const [videoSubCategory, setVideoSubCategory] = useState([])
-  const [uploadOverview, setUploadOverview] = useState({})
-  const [message, setMessage] = useState('')
-  const [course, setCourse] = useState(null)
+  const [counterVideo, setCounterVideo] = useState(0);
+  const [uploadSuccessful, setUploadSuccessful] = useState(true);
+  const [videoCategory, setVideoCategory] = useState([]);
+  const [videoSubCategory, setVideoSubCategory] = useState([]);
+  const [uploadOverview, setUploadOverview] = useState({});
+  const [message, setMessage] = useState('');
+  const [course, setCourse] = useState(null);
 
-  const description = useSelector((state) => state.description)
-  const videoData = useSelector((state) => state.chapter)
-  const dispatch = useDispatch()
+  const description = useSelector((state) => state.description);
+  const videoData = useSelector((state) => state.chapter);
+  const dispatch = useDispatch();
 
   // console.log('AAAAAAAAAA', course)
   // dispatch(storecourseId(course))
 
   const addVideoHandler = () => {
-    setCounterVideo(counterVideo + 1)
+    setCounterVideo(counterVideo + 1);
     // console.log(counter)
-  }
+  };
 
   // useEffect(() => {
   //   dispatch(storecourseId(course))
@@ -54,15 +58,15 @@ const Upload = () => {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
-        },
+        }
       )
       .then((res) => {
         // alert('data')
         // console.log('data', res.data)
 
-        setVideoCategory(res.data)
-      })
-  }, [])
+        setVideoCategory(res.data);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -72,19 +76,19 @@ const Upload = () => {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
-        },
+        }
       )
       .then((res) => {
         // alert('data')
         // console.log('data', res.data)
-        setVideoSubCategory(res.data)
-      })
-  }, [])
+        setVideoSubCategory(res.data);
+      });
+  }, []);
 
-  const overViewDataToBeUploaded = useSelector((state) => state.overViewData)
+  const overViewDataToBeUploaded = useSelector((state) => state.overViewData);
 
   const uploadVideosHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     const formData = {
       videoCategory: e.target.videoCategory.value,
@@ -98,28 +102,28 @@ const Upload = () => {
       courseName: e.target.videoTitle.value,
       difficultyLevel: e.target.difficultyLevel.value,
       courseKeyWord: e.target.courseKeyWord.value,
-    }
+    };
 
-    overViewData()
-    dispatch(storeoverViewData(formData))
+    overViewData();
+    dispatch(storeoverViewData(formData));
 
-    console.log('overview data to be uploaded', formData)
-  }
+    console.log('overview data to be uploaded', formData);
+  };
   const overViewData = (formData) => {
-    console.log('form data', formData)
-  }
+    console.log('form data', formData);
+  };
 
   const videosJsonToBeUploaded = useSelector(
-    (state) => state.chapter.chapterDataRequestList,
-  )
+    (state) => state.chapter.chapterDataRequestList
+  );
   const overViewDataChapter = useSelector(
-    (state) => state.overViewData.videoTitle,
-  )
-  console.log('alert message', message)
+    (state) => state.overViewData.videoTitle
+  );
+  console.log('alert message', message);
   const uploadVideojson = () => {
     // alert('alert')
-    console.log('alert', videoData, message)
-    console.log('overView', overViewDataToBeUploaded.courseName)
+    console.log('alert', videoData, message);
+    console.log('overView', overViewDataToBeUploaded.courseName);
 
     axios
       .request(
@@ -133,7 +137,7 @@ const Upload = () => {
             courseName: overViewDataToBeUploaded.courseName,
             chapterDataRequestList: videoData.chapterDataRequestList,
           },
-        },
+        }
       )
       .then((res) => {
         toast.success('Chapter added successfully', {
@@ -145,13 +149,13 @@ const Upload = () => {
           draggable: true,
           progress: undefined,
           theme: 'colored',
-        })
+        });
         // console.log('overview result success', res.data)
         // alert('res && res.data && res.data.message && res.data.message')
         // console.log('fgvbhmlh', res.data.message)
       })
       .catch((err) => {
-        console.log('over view result error', err)
+        console.log('over view result error', err);
         toast.error('Something went Wrong', {
           position: 'top-left',
           autoClose: 5000,
@@ -161,21 +165,21 @@ const Upload = () => {
           draggable: true,
           progress: undefined,
           theme: 'colored',
-        })
-      })
-  }
+        });
+      });
+  };
 
   useEffect(() => {
-    setUploadOverview(videosJsonToBeUploaded)
-  }, [videosJsonToBeUploaded])
+    setUploadOverview(videosJsonToBeUploaded);
+  }, [videosJsonToBeUploaded]);
 
   const overViewHandler = () => {
     const uploadJSON = {
       courseName: overViewDataChapter,
       chapterDataRequestList: videosJsonToBeUploaded,
-    }
+    };
 
-    console.log('video data to be uploaded', uploadJSON)
+    console.log('video data to be uploaded', uploadJSON);
     // alert(JSON.stringify(uploadJSON))
 
     axios
@@ -187,10 +191,10 @@ const Upload = () => {
           },
           method: 'post',
           data: overViewDataToBeUploaded,
-        },
+        }
       )
       .then((res) => {
-        console.log('overview result success', res)
+        console.log('overview result success', res);
         toast.success('OverView added successfully', {
           position: 'top-center',
           autoClose: 5000,
@@ -200,17 +204,17 @@ const Upload = () => {
           draggable: true,
           progress: undefined,
           theme: 'colored',
-        })
+        });
 
-        const text = res.data.message.split(' ')
-        const courseId = text[text.length - 1]
-        dispatch(storecourseId(courseId))
+        const text = res.data.message.split(' ');
+        const courseId = text[text.length - 1];
+        dispatch(storecourseId(courseId));
       })
       .catch((err) => {
         // console.log('over view result error', err)
-        alert('Some error occured')
-      })
-  }
+        alert('Some error occured');
+      });
+  };
 
   return (
     <div>
@@ -252,9 +256,10 @@ const Upload = () => {
                           >
                             {cat.categoryName}
                           </option>
-                        )
+                        );
                       })}
                   </select>
+                  <div className="addCategoryBtn">{addIcon}</div>
                 </div>
               </div>
               {/* video sub category */}
@@ -272,9 +277,10 @@ const Upload = () => {
                           >
                             {cat.subCategoryName}
                           </option>
-                        )
+                        );
                       })}
                   </select>
+                  <div className="addCategoryBtn">{addIcon}</div>
                 </div>
               </div>
             </div>
@@ -310,7 +316,7 @@ const Upload = () => {
             <button
               className="QandA-Button"
               onClick={() => {
-                overViewHandler()
+                overViewHandler();
               }}
             >
               Save Overview Data
@@ -328,8 +334,8 @@ const Upload = () => {
               type="button"
               className="QandA-addNewBtn"
               onClick={() => {
-                addVideoHandler()
-                dispatch(storechapter({ chapterName: '', lessonsList: [] }))
+                addVideoHandler();
+                dispatch(storechapter({ chapterName: '', lessonsList: [] }));
               }}
             >
               Add&nbsp;New&nbsp;+
@@ -362,8 +368,8 @@ const Upload = () => {
                                   chapterName({
                                     index: index,
                                     chapter: e.target.value,
-                                  }),
-                                )
+                                  })
+                                );
                               }}
                             />
                           </div>
@@ -379,7 +385,7 @@ const Upload = () => {
                 </AccordionItemPanel>
               </AccordionItem>
             </Accordion>
-          )
+          );
         })}
         <div className="Upload-buttonPublish">
           <button className="QandA-Button" onClick={uploadVideojson}>
@@ -388,7 +394,7 @@ const Upload = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Upload
+export default Upload;
