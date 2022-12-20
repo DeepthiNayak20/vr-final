@@ -1,10 +1,52 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducers/showModal';
 import './Modal.css';
 
 const Modal = (props) => {
   const dispatch = useDispatch();
+  const [image, setImage] = useState('');
+
+  const loadFile = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log('data', props.title, props.url);
+    if (props.title === 'Category') {
+      const form = document.getElementById('modalForm');
+      const formData = new FormData(form);
+
+      formData.append('categoryName', e.target.cat.value);
+      formData.append('categoryPhoto', image);
+
+      axios
+        .request(
+          `http://virtuallearnadmin-env.eba-vvpawj4n.ap-south-1.elasticbeanstalk.com/admin/category`,
+          {
+            method: 'post',
+            headers: {
+              Accept: 'application/json, text/plain, */*',
+              'Content-type': ' multipart/form-date',
+              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            },
+            data: formData,
+          }
+        )
+        .then((res) => {
+          console.log('res', res.data);
+          sessionStorage.setItem('catId', res.data.categoryId);
+          alert(res.data.status);
+        })
+        .catch((err) => {
+          alert(err.response.data.Error);
+        });
+    } else if (props.title === 'Sub Category') {
+      alert('sub cAt');
+    }
+  };
 
   return (
     <div
@@ -19,12 +61,31 @@ const Modal = (props) => {
           e.stopPropagation();
         }}
       >
-        <div className="delete-course-modal-content">
+        <form
+          id="modalForm"
+          className="delete-course-modal-content"
+          style={{ height: 'unset !important' }}
+          onSubmit={submitHandler}
+        >
           <div className="deleteCourse">{props && props.title}</div>
           <div className="deleteContent">Add new {props.title}</div>
-          <input className="upload-inputField " />
+          <input className="upload-inputField " name="cat" />
+          {props.title === 'Category' ? (
+            <input
+              id="file"
+              type="file"
+              className="upload-inputField "
+              accept="image/png, image/jpeg"
+              onChange={(e) => {
+                loadFile(e);
+              }}
+            />
+          ) : (
+            ''
+          )}
           <div className="buttons modalInput">
             <button
+              type="button"
               className="cancel"
               onClick={() => {
                 dispatch(showModal(false));
@@ -32,9 +93,11 @@ const Modal = (props) => {
             >
               Cancel
             </button>
-            <button className="delete">Add</button>
+            <button type="submit" className="delete">
+              Add
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

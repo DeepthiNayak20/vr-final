@@ -36,6 +36,7 @@ const Upload = () => {
   const [message, setMessage] = useState('');
   const [course, setCourse] = useState(null);
   const [modalData, setModalData] = useState('');
+  const [modalUrl, setModalUrl] = useState('');
 
   const description = useSelector((state) => state.description);
   const videoData = useSelector((state) => state.chapter);
@@ -270,6 +271,7 @@ const Upload = () => {
                     onClick={() => {
                       dispatch(showModal(true));
                       setModalData('Category');
+                      setModalUrl('admin/category');
                     }}
                   >
                     {addIcon}
@@ -299,6 +301,7 @@ const Upload = () => {
                     onClick={() => {
                       dispatch(showModal(true));
                       setModalData('Sub Category');
+                      setModalUrl('admin/subCategory');
                     }}
                   >
                     {addIcon}
@@ -415,7 +418,9 @@ const Upload = () => {
           </button>
         </div>
       </div>
-      {showModalState && modalData !== '' && <Modal title={modalData} />}
+      {showModalState && modalData !== '' && modalUrl !== '' && (
+        <Modal title={modalData} url={modalUrl} />
+      )}
     </div>
   );
 };

@@ -2,3 +2,4 @@
 * Add buttons added to video category and sub category
 * modal file is created in utls folder
 * show modal slice added in redux
+*response from category id stored in sessionStorage
