@@ -44,6 +44,31 @@ const Modal = (props) => {
           alert(err.response.data.Error);
         });
     } else if (props.title === 'Sub Category') {
+      axios
+        .request(
+          `http://virtuallearnadmin-env.eba-vvpawj4n.ap-south-1.elasticbeanstalk.com/admin/subCategory`,
+          {
+            method: 'post',
+            headers: {
+              Accept: 'application/json, text/plain, */*',
+              'Content-type': ' multipart/form-date',
+              Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            },
+            data: {
+              categoryId: parseInt(sessionStorage.getItem('catId')),
+              subCategoryName: e.target.cat.value,
+            },
+          }
+        )
+        .then((res) => {
+          console.log('res', res.data);
+          sessionStorage.setItem('catId', res.data.categoryId);
+          alert(res.data.status);
+        })
+        .catch((err) => {
+          alert(err.response.data.Error);
+        });
+    } else if (props.title === 'Sub Category') {
       alert('sub cAt');
     }
   };
