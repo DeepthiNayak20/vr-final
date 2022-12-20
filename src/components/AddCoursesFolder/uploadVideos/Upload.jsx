@@ -25,6 +25,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { addIcon } from '../../../utils/icons';
 import Modal from '../../../../src/utils/modal/Modal';
+import { showModal } from '../../../redux/reducers/showModal';
 
 const Upload = () => {
   const [counterVideo, setCounterVideo] = useState(0);
@@ -34,9 +35,11 @@ const Upload = () => {
   const [uploadOverview, setUploadOverview] = useState({});
   const [message, setMessage] = useState('');
   const [course, setCourse] = useState(null);
+  const [modalData, setModalData] = useState('');
 
   const description = useSelector((state) => state.description);
   const videoData = useSelector((state) => state.chapter);
+
   const dispatch = useDispatch();
 
   // console.log('AAAAAAAAAA', course)
@@ -217,6 +220,8 @@ const Upload = () => {
       });
   };
 
+  const showModalState = useSelector((state) => state.showModal.showModal);
+
   return (
     <div>
       <div className="upload-container">
@@ -260,7 +265,15 @@ const Upload = () => {
                         );
                       })}
                   </select>
-                  <div className="addCategoryBtn">{addIcon}</div>
+                  <div
+                    className="addCategoryBtn"
+                    onClick={() => {
+                      dispatch(showModal(true));
+                      setModalData('Category');
+                    }}
+                  >
+                    {addIcon}
+                  </div>
                 </div>
               </div>
               {/* video sub category */}
@@ -281,7 +294,15 @@ const Upload = () => {
                         );
                       })}
                   </select>
-                  <div className="addCategoryBtn">{addIcon}</div>
+                  <div
+                    className="addCategoryBtn"
+                    onClick={() => {
+                      dispatch(showModal(true));
+                      setModalData('Sub Category');
+                    }}
+                  >
+                    {addIcon}
+                  </div>
                 </div>
               </div>
             </div>
@@ -394,7 +415,7 @@ const Upload = () => {
           </button>
         </div>
       </div>
-      <Modal />
+      {showModalState && modalData !== '' && <Modal title={modalData} />}
     </div>
   );
 };

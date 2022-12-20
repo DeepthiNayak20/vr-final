@@ -7,3 +7,11 @@
   background: #000000ad;
   z-index: 999999;
 }
+
+.modalInput {
+  display: flex;
+  /* gap: 75px; */
+  justify-content: space-between !important;
+  width: 100% !important;
+  margin-top: 24px !important;
+}
