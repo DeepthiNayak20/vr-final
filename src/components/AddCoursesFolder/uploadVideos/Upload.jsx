@@ -24,6 +24,7 @@ import { storecourseId } from '../../../redux/reducers/courseIdSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { addIcon } from '../../../utils/icons';
+import Modal from '../../../../src/utils/modal/Modal';
 
 const Upload = () => {
   const [counterVideo, setCounterVideo] = useState(0);
@@ -393,6 +394,7 @@ const Upload = () => {
           </button>
         </div>
       </div>
+      <Modal />
     </div>
   );
 };
